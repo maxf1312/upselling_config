@@ -39,3 +39,27 @@
 
 # debug information files
 *.dwo
+
+*.user
+*.ncb
+*.log
+*.suo
+*/Release/
+*/Debug/
+debug/
+release/
+wscardaxcstest/obj/
+zsutils/zsutils.h
+zsutils/zsutils.tlb
+zsutils/zsutils_i.c
+zsutils/zsutils_p.c
+*/*.aps
+*/*.tlb
+.vs/
+*/.vs/
+#*/.vscode/
+#.vscode/
+lib/*/
+build/*
+*/build/*
+doc/*
