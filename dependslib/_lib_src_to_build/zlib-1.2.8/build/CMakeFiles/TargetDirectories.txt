@@ -1,0 +1,10 @@
+D:/Projects/Seredina.new/GSPosProc/lib/libs/zlib-1.2.8/build/CMakeFiles/zlib.dir
+D:/Projects/Seredina.new/GSPosProc/lib/libs/zlib-1.2.8/build/CMakeFiles/zlibstatic.dir
+D:/Projects/Seredina.new/GSPosProc/lib/libs/zlib-1.2.8/build/CMakeFiles/example.dir
+D:/Projects/Seredina.new/GSPosProc/lib/libs/zlib-1.2.8/build/CMakeFiles/list_install_components.dir
+D:/Projects/Seredina.new/GSPosProc/lib/libs/zlib-1.2.8/build/CMakeFiles/minigzip.dir
+D:/Projects/Seredina.new/GSPosProc/lib/libs/zlib-1.2.8/build/CMakeFiles/rebuild_cache.dir
+D:/Projects/Seredina.new/GSPosProc/lib/libs/zlib-1.2.8/build/CMakeFiles/test.dir
+D:/Projects/Seredina.new/GSPosProc/lib/libs/zlib-1.2.8/build/CMakeFiles/edit_cache.dir
+D:/Projects/Seredina.new/GSPosProc/lib/libs/zlib-1.2.8/build/CMakeFiles/install/local.dir
+D:/Projects/Seredina.new/GSPosProc/lib/libs/zlib-1.2.8/build/CMakeFiles/install.dir

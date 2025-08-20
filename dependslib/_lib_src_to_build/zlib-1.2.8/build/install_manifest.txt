@@ -1,0 +1,7 @@
+D:/LIB/zlib/lib/zlibd.lib
+D:/LIB/zlib/bin/zlibd.dll
+D:/LIB/zlib/lib/zlibstaticd.lib
+D:/LIB/zlib/include/zconf.h
+D:/LIB/zlib/include/zlib.h
+D:/LIB/zlib/share/man/man3/zlib.3
+D:/LIB/zlib/share/pkgconfig/zlib.pc

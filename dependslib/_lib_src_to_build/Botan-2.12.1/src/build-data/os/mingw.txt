@@ -1,0 +1,28 @@
+
+program_suffix .exe
+obj_suffix o
+static_suffix a
+
+install_root /mingw
+header_dir include
+lib_dir lib
+doc_dir share/doc
+
+<feature_macros>
+_WIN32_WINNT=0x0600
+</feature_macros>
+
+<aliases>
+msys
+mingw32.*
+</aliases>
+
+<target_features>
+win32
+rtlgenrandom
+virtual_lock
+
+threads
+thread_local
+filesystem
+</target_features>

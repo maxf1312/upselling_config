@@ -1,0 +1,5 @@
+Utility for generating COFF import library from dll.
+Needs dumpbin and lib from MS Visual Studio.
+Usage:
+
+dll2implib PATH_TO_DLL

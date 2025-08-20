@@ -1,0 +1,614 @@
+#pragma once
+
+#ifndef __UTILS_H__
+#define __UTILS_H__
+
+#include <libplcore/zsutilsexp.h>
+
+typedef struct tag_seredina_response seredina_response_t; 
+enum seredina_tribool_t;
+
+namespace ProLoyalty{
+
+    struct LocaleSetter
+    {
+        int m_categ;
+        const char* m_prev_loc;
+        LocaleSetter(int categ, const char* loc_nm);
+        ~LocaleSetter();
+    };
+
+ZSUTILS_API std::string toUTF8( const std::wstring &input, unsigned cp = cpUTF8  );
+ZSUTILS_API std::wstring toUTF16( const std::string &input, unsigned cp = cpUTF8  );
+ZSUTILS_API std::wstring toUTF16( const std::string &input, const char* locale_nm  );
+
+/// Тип для ид транзакции
+typedef long long int id_transaction_t;
+ZSUTILS_API id_transaction_t  id_transaction_t_from_string(const std::string& s);
+ZSUTILS_API std::string		  id_transaction_t_to_string(const id_transaction_t& t);
+ZSUTILS_API id_transaction_t  id_transaction_t_from_wstring(const std::wstring& s);
+ZSUTILS_API std::wstring	  id_transaction_t_to_wstring(const id_transaction_t& t);
+
+/// Тип для продолжительности операции, микросек, us
+typedef unsigned long long int oper_duration_t;
+
+//-----------------------------------------------------------------------------
+/// Разбирает строку с ИД процессинга. 
+/// Строка хранит данные в формате: 
+/// [IDProcessor[|PathToIni[|Decode:{0,1}]]] 
+/// IDProcessor - Идентификатор процессора, в формате NSpace:Processor, 
+///				  по умолчанию равен "ZS:ProcessorV2".	
+/// PathToIni   - Путь к файлу настроек, если указан не абсолютный путь, 
+///				  производится его нормализация и приведение к абсолютному пути.
+///				  Если не указан - считается путь к ИНИ по умолчанию (wscardterm.ini)	
+/// Decode		- Флаг декодирования, по умолчанию равен 0. Если равен 1, параметры 
+///				  из файла дешифруются.
+/// @param [in]  processing_id - строка c полным ID
+/// @param [out] processor_id - ИД процессора, например "ZS:ProcessorV2"
+/// @param [out] path_to_ini - путь к ИНИ, в конце после знака | может быть список параметров
+///				 "/usr/local/seredina/wscardterm.ini|Decode:1" 
+//-----------------------------------------------------------------------------
+ZSUTILS_API 
+void parse_proc_id(const wchar_t* processing_id, std::wstring& processor_id, std::wstring& path_to_ini);
+ZSUTILS_API inline 
+void parse_proc_id(const std::wstring& processing_id, std::wstring& processor_id, std::wstring& path_to_ini)
+{
+	parse_proc_id(processing_id.c_str(), processor_id, path_to_ini);
+}
+
+//-----------------------------------------------------------------------------
+/// @get_home_dir Возвращает домашний каталог и его указанную поддиректорию.  
+/// переданных в объектах req и res.
+/// @param [in]  sub_dir - подкаталог, если NULL - значит пустая строка.
+/// 
+//-----------------------------------------------------------------------------
+ZSUTILS_API std::wstring get_home_dir(const wchar_t* sub_dir);
+ZSUTILS_API inline std::wstring get_home_dir(const std::wstring& sub_dir)
+{
+	return get_home_dir(sub_dir.c_str());
+}
+ZSUTILS_API std::wstring get_config_dir();
+ZSUTILS_API std::wstring get_log_dir();
+ZSUTILS_API std::wstring get_log_nm(const wchar_t* suffix);
+ZSUTILS_API inline std::wstring get_log_nm(const std::wstring& suffix)
+{
+	return get_log_nm(suffix.c_str());
+}
+ZSUTILS_API std::wstring get_log_path(const wchar_t* suffix = L"gs");
+ZSUTILS_API inline std::wstring get_log_path(const std::wstring& suffix)
+{
+	return get_log_path(suffix.c_str());
+}
+ZSUTILS_API std::wstring get_db_dir();
+ZSUTILS_API std::wstring get_tmp_dir();
+ZSUTILS_API std::wstring get_bin_dir();
+ZSUTILS_API std::wstring get_lib_dir();
+//-----------------------------------------------------------------------------
+/// @path_from_utf16 конвертирует путь к файлу из UTF16 в текущую кодировку приложения
+/// @param [in]  path - путь. Если NULL - значит пустая строка.
+//-----------------------------------------------------------------------------
+ZSUTILS_API std::string  path_from_utf16(const wchar_t* path);
+ZSUTILS_API std::string  path_from_utf16(const std::wstring& path);
+//-----------------------------------------------------------------------------
+/// @path_to_utf16 конвертирует путь к файлу в UTF16 из текущей кодировки приложения
+/// @param [in]  path - путь. Если NULL - значит пустая строка.
+//-----------------------------------------------------------------------------
+ZSUTILS_API std::wstring path_to_utf16(const char* path);
+ZSUTILS_API std::wstring path_to_utf16(const std::string& path);
+
+//-----------------------------------------------------------------------------
+/// @translate_err_msg - перевод сообщения с указанным кодом. 
+/// если текста об ошибке с кодом err_code нет - возвращается orig_msg;
+//-----------------------------------------------------------------------------
+ZSUTILS_API std::wstring translate_err_msg(int err_code, const std::wstring& orig_msg);
+
+//-----------------------------------------------------------------------------
+/// @normalize_file_nm Нормализует имя файла из относительного в абсолютное.  
+/// @param [in]  fn - имя файла, если NULL - значит имя wscardterm.ini.
+/// 
+//-----------------------------------------------------------------------------
+ZSUTILS_API std::wstring normalize_file_nm(const wchar_t* fn);
+
+//-----------------------------------------------------------------------------
+/// @normalize_ini_file_nm Нормализует имя файла настройки из относительного
+/// в абсолютное, учитывая возможность значения по умолчанию.
+/// @param [in]  ini_file - имя файла, если NULL - значит имя wscardterm.ini.
+/// @param [in]  needed_ext - требуемое(ожидаемое) расширение, начинается с '.'
+//-----------------------------------------------------------------------------
+ZSUTILS_API std::wstring normalize_ini_file_nm(const wchar_t* ini_file,
+											   const wchar_t* needed_ext);
+
+//-----------------------------------------------------------------------------
+ZSUTILS_API std::string			str_to_upper  (std::string  const& s);
+ZSUTILS_API std::wstring		wstr_to_upper (std::wstring const& s);
+
+//-----------------------------------------------------------------------------
+/// @str_trim и @wstr_trim - реализация trim для string и wstring
+ZSUTILS_API std::string&		str_trim( std::string& s, const char* szDelims = " \t\r\n");
+ZSUTILS_API std::wstring&		wstr_trim(std::wstring& s, const wchar_t* szDelims = L" \t\r\n");
+
+ZSUTILS_API std::string			str_trim( std::string const& s, const char* szDelims = " \t\r\n");
+ZSUTILS_API std::wstring		wstr_trim(std::wstring const& s, const wchar_t* szDelims = L" \t\r\n");
+
+template <typename CharT>
+std::basic_string<CharT>& string_trim(std::basic_string<CharT>& s, const CharT* szDelims)
+{
+  s.erase(0, s.find_first_not_of( szDelims ) );
+  s.erase(s.find_last_not_of( szDelims ) + 1);
+  return s;
+}
+
+template <typename CharT>
+std::basic_string<CharT> string_trim(std::basic_string<CharT> const& p_s, const CharT* szDelims)
+{
+	std::basic_string<CharT> s(p_s);
+	s.erase(0, s.find_first_not_of( szDelims ) );
+	s.erase(s.find_last_not_of( szDelims ) + 1);
+	return s;
+}
+//-----------------------------------------------------------------------------
+template <typename CharT>
+struct trim_delimiters_t
+{
+	static const CharT * const value;  
+};
+
+template <>
+struct trim_delimiters_t<char>
+{
+	static const char * const value;// = " \t\r\n";  
+};
+
+template <>
+struct trim_delimiters_t<wchar_t>
+{
+	static const wchar_t * const value; // = L" \t\r\n";  
+};
+
+template <typename CharT>
+std::basic_string<CharT> trim_string(std::basic_string<CharT> const& s, 
+									 const CharT* szDelims = trim_delimiters_t<CharT>::value)
+{
+	std::basic_string<CharT> r(s);
+	r.erase(0, r.find_first_not_of( szDelims ) );
+	r.erase(r.find_last_not_of( szDelims ) + 1);
+	return r;
+}
+//-----------------------------------------------------------------------------
+template <typename CharT>
+std::basic_string<CharT>& str_replace(std::basic_string<CharT>& s,
+									  const std::basic_string<CharT>& old_str,
+						  		      const std::basic_string<CharT>& new_str,
+									  typename std::basic_string<CharT>::size_type pos,
+									  typename std::basic_string<CharT>::size_type* next_pos)
+{
+	typename std::basic_string<CharT>::size_type i = s.find(old_str, pos);
+    if (next_pos) *next_pos = i;
+    if( std::basic_string<CharT>::npos != i )
+	{
+		if( new_str.empty() )
+            s.erase(i, old_str.length());
+        else
+            s.replace(i, old_str.length(), new_str);
+		if( next_pos ) *next_pos = i + new_str.length();
+	}
+	return s;
+}
+//-----------------------------------------------------------------------------
+template <typename CharT>
+std::basic_string<CharT>& str_replace_all(std::basic_string<CharT>& s,
+										  const std::basic_string<CharT>& old_str,
+						  				  const std::basic_string<CharT>& new_str,
+									      typename std::basic_string<CharT>::size_type pos,
+									      typename std::basic_string<CharT>::size_type* next_pos)
+{
+	typename std::basic_string<CharT>::size_type next = pos;
+	do
+	{
+		pos = next;
+		str_replace(s, old_str, new_str, pos, &next);
+	}
+	while(next != pos && next != std::basic_string<CharT>::npos || next < s.length());
+	return s;
+}
+//-----------------------------------------------------------------------------
+inline std::wstring& wstr_replace(std::wstring& s, const std::wstring& old_str, 
+						  	      const std::wstring& new_str, 
+					      std::wstring::size_type pos = 0, 
+						  std::wstring::size_type* next_pos = NULL)
+{
+	return str_replace(s, old_str, new_str, pos, next_pos);
+}
+//-----------------------------------------------------------------------------
+inline std::wstring& wstr_replace_all(std::wstring& s, const std::wstring& old_str, 
+						  	      const std::wstring& new_str, 
+					      std::wstring::size_type pos = 0, 
+						  std::wstring::size_type* next_pos = NULL)
+{
+	return str_replace_all(s, old_str, new_str, pos, next_pos);
+}
+
+
+//-----------------------------------------------------------------------------
+/// @check_struct_ptr
+//-----------------------------------------------------------------------------
+template <typename T>
+int check_struct_ptr(T* p)
+{
+	return !p || p->size_of_struct != sizeof(T) ? SEREDINA_ERR_INVARG : SEREDINA_ERR_OK;
+}
+
+//-----------------------------------------------------------------------------
+/// @init_struct_t structures's initializer
+//-----------------------------------------------------------------------------
+template <typename T>
+void init_struct_t(T& s, bool no_zero = false)
+{
+    if (!no_zero)  s = T{};
+    s.size_of_struct = sizeof(T);
+}
+//-----------------------------------------------------------------------------
+/// @iif_values_with_cast 
+//-----------------------------------------------------------------------------
+template <typename T1, typename T2>
+T2 iif_values_with_cast(const T1 v1, const T1 v_neq, const T2 v2)
+{
+	T2 r = v2;
+	if( v1 != v_neq ) r = static_cast<T2>(v1);
+	return r;
+}
+
+template <size_t N>
+const wchar_t* wchararr_2_pwchar(wchar_t (&rArr)[N])
+{
+	if( !N ) return L"";
+	if( L'\0' != rArr[N - 1] ) rArr[N - 1] = L'\0'; 
+	return L'\0' == rArr[0] ? L"" : rArr;
+}
+
+template <size_t N>
+inline const wchar_t* wchararr_2_pwchar(wchar_t const (&rArr)[N])
+{
+	return wchararr_2_pwchar(const_cast<wchar_t (&)[N]>(rArr)); 
+}
+
+inline wchar_t* copy_2_wchararr_impl(wchar_t* p_dest, size_t N, const wchar_t* p_src)
+{
+#ifdef _WINDOWS
+	wcsncpy_s(p_dest, N, p_src, N - 1);
+#else
+	wcsncpy(p_dest, p_src, N - 1);
+#endif // _WINDOWS
+	p_dest[N - 1] = L'\0';
+	return p_dest;
+}
+
+template <size_t N>
+inline wchar_t* copy_2_wchararr(wchar_t(&r_dest)[N], const wchar_t* p_src)
+{
+    return copy_2_wchararr_impl(r_dest, N, p_src);
+}
+
+template <size_t N, typename WStrT>
+inline wchar_t* copy_2_wchararr(wchar_t(&r_dest)[N], const WStrT& src)
+{
+    return copy_2_wchararr_impl(r_dest, N, src.c_str());
+}
+
+//-----------------------------------------------------------------------------
+/// @del_and_null
+//-----------------------------------------------------------------------------
+template <typename T>
+void del_and_null(T* (&p))
+{
+	delete p; p = NULL;
+}
+
+
+//-----------------------------------------------------------------------------
+/// @get_val - шаблон для получения значения объекта через метод T ContT::getV() const;
+//-----------------------------------------------------------------------------
+template<typename T, typename ContT>
+T get_val(ContT& obj, T (ContT::* mem_obj)() const)
+{
+	return (obj.*mem_obj)();
+}
+
+//-----------------------------------------------------------------------------
+/// @init_response_result_t - inits response buffer
+//-----------------------------------------------------------------------------
+ZSUTILS_API void init_response_result_t(seredina_response_t& resp);
+
+//-----------------------------------------------------------------------------
+/// Сравнение строк на равенство без учета регистра
+struct is_string_equals_ci_basicstr_tag;
+template <typename CType, typename CTag = is_string_equals_ci_basicstr_tag>
+bool is_string_equals_ci(const std::basic_string<CType>& s1, const std::basic_string<CType>& s2)
+{
+    return s1.length() == s2.length() &&
+        std::equal(s1.begin(), s1.end(), s2.begin(), s2.end(),
+                   [](auto c1, auto c2)
+    {
+        return toupper(c1) == toupper(c2);
+    }
+    );
+}
+//-----------------------------------------------------------------------------
+template <typename CType>
+bool is_string_equals_ci(const CType* s1, const CType* s2)
+{
+    return !s1 && !s2 || !*s1 && !*s2 || (s1 && s2 && is_string_equals_ci(std::basic_string<CType>{s1}, std::basic_string<CType>{s2}));
+}
+//-----------------------------------------------------------------------------
+/// Разбивает строку на части по указанным разделителям 
+template <typename CType>
+std::vector<std::basic_string<CType> > split(const std::basic_string<CType>& s, const CType* delim)
+{
+    std::vector<std::basic_string<CType> > fields;
+
+    size_t first = 0, found = std::basic_string<CType>::npos;
+    do
+    {
+        found = s.find_first_of(delim, first);
+        fields.emplace_back(s.substr(first, std::basic_string<CType>::npos != found ? found - first : std::basic_string<CType>::npos));
+        first = std::basic_string<CType>::npos != found ? found + 1 : std::basic_string<CType>::npos;
+    } while (std::basic_string<CType>::npos != found);
+    return fields;
+}
+//-----------------------------------------------------------------------------
+template <typename CharT>
+struct quote_char_t
+{
+    static const CharT value;
+};
+
+template <>
+struct quote_char_t<char>
+{
+    static const char value;// = '\"';  
+};
+
+template <>
+struct quote_char_t<wchar_t>
+{
+    static const wchar_t value; // = L'\"';  
+};
+
+
+//-----------------------------------------------------------------------------
+/// Корректирует поля в массиве, получившемся из строки с разделителями, чтобы строки с кавычками были в одном поле
+template <typename CType>
+std::vector<std::basic_string<CType> > 
+correct_splitted_quotted_fields(std::vector<std::basic_string<CType> > fields,
+    const CType delim_char,
+    const CType quote_char = quote_char_t<CType>::value,
+    const CType* space_delimiters = trim_delimiters_t<CType>::value)
+{
+    const size_t npos = std::basic_string<CType>::npos;
+    bool         concatenate_mode = false;
+
+    for(auto p = fields.begin(); p != fields.end() ; ++p)
+    {
+        size_t  first = p->find_first_not_of(space_delimiters); 
+        if (npos == first) continue;
+
+        size_t last = p->find_last_not_of(space_delimiters);
+        if (npos == last) continue;
+
+        size_t first_found = p->find(quote_char, first);
+        size_t last_found = p->rfind(quote_char, last);
+        if (!concatenate_mode) 
+        {
+            if (first_found == first ) 
+                if (last_found == last) continue;
+                else concatenate_mode = true;
+        }
+        else 
+        {
+            p[-1] += delim_char;
+            p[-1] += *p;
+            fields.erase(p--);
+
+            if (last_found == last) concatenate_mode = false;
+        }
+    }
+    return fields;
+}
+//-----------------------------------------------------------------------------
+/// Удаляет обрамляющие кавычки 
+template <typename CType> std::basic_string<CType> 
+remove_framing_quotes(std::basic_string<CType> s, 
+                      const CType quote_char = quote_char_t<CType>::value,
+                      const CType* space_delimiters = trim_delimiters_t<CType>::value)
+{
+    const size_t npos = std::basic_string<CType>::npos;
+
+    size_t  first = s.find_first_not_of(space_delimiters);
+    if (npos == first) return s;
+
+    size_t first_found = s.find(quote_char, first);
+    if (first_found == first) s.erase(0, first_found + 1);
+
+    size_t last = s.find_last_not_of(space_delimiters);
+    if (npos == last) return s;
+
+    size_t last_found = s.rfind(quote_char, last);
+    if (last_found == last) s.erase(last_found, s.length() - last_found);
+    return s;
+}
+//-----------------------------------------------------------------------------
+/// Растояние Левенштейна для нечеткого поиска.
+/// Взято с https://ru.wikibooks.org/wiki/
+///
+template<typename T>
+typename T::size_type GeneralizedLevenshteinDistance(const T &source,
+                                                     const T &target,
+                                                     typename T::size_type insert_cost = 1,
+                                                     typename T::size_type delete_cost = 1,
+                                                     typename T::size_type replace_cost = 1) 
+{
+    if (source.size() > target.size())
+    {
+        return GeneralizedLevenshteinDistance(target, source, delete_cost, insert_cost, replace_cost);
+    }
+
+    using TSizeType = typename T::size_type;
+    const TSizeType min_size = source.size(), max_size = target.size();
+    std::vector<TSizeType> lev_dist(min_size + 1);
+
+    lev_dist[0] = 0;
+    for (TSizeType i = 1; i <= min_size; ++i)
+    {
+        lev_dist[i] = lev_dist[i - 1] + delete_cost;
+    }
+
+    for (TSizeType j = 1; j <= max_size; ++j)
+    {
+        TSizeType previous_diagonal = lev_dist[0], previous_diagonal_save;
+        lev_dist[0] += insert_cost;
+
+        for (TSizeType i = 1; i <= min_size; ++i)
+        {
+            previous_diagonal_save = lev_dist[i];
+            if (source[i - 1] == target[j - 1])
+            {
+                lev_dist[i] = previous_diagonal;
+            }
+            else
+            {
+                lev_dist[i] = std::min(std::min(lev_dist[i - 1] + delete_cost, lev_dist[i] + insert_cost), previous_diagonal + replace_cost);
+            }
+            previous_diagonal = previous_diagonal_save;
+        }
+    }
+    return lev_dist[min_size];
+}
+//-----------------------------------------------------------------------------
+template<typename T>
+typename T::size_type LevenshteinDistance(const T &source,
+                                          const T &target)
+{
+    return GeneralizedLevenshteinDistance<T>(source, target);
+}
+//-----------------------------------------------------------------------------
+template<typename T>
+typename T::size_type GeneralizedDamerauLevenshteinDistance(const T &source,
+                                                     const T &target,
+                                                     typename T::size_type insert_cost = 1,
+                                                     typename T::size_type delete_cost = 1,
+                                                     typename T::size_type replace_cost = 1, 
+                                                     typename T::size_type transposition_cost = 1)
+{
+    if (source.size() > target.size())
+    {
+        return GeneralizedDamerauLevenshteinDistance(target, source, delete_cost, insert_cost, replace_cost, transposition_cost);
+    }
+
+    using TSizeType = typename T::size_type;
+    const TSizeType min_size = source.size(), max_size = target.size();
+    std::vector<std::vector<TSizeType>> lev_dist(min_size + 1, std::vector<TSizeType>(max_size + 1));
+
+    lev_dist[0][0] = 0;
+    for (TSizeType i = 1; i <= min_size; ++i)
+    {
+        lev_dist[i][0] = lev_dist[i - 1][0] + delete_cost;
+    }
+
+    for (TSizeType j = 1; j <= max_size; ++j)
+    {
+        lev_dist[0][j] = lev_dist[0][j - 1] + insert_cost;
+    }
+
+    for (TSizeType j = 1; j <= max_size; ++j)
+    {
+        for (TSizeType i = 1; i <= min_size; ++i)
+        {
+            if (source[i - 1] == target[j - 1])
+            {
+                lev_dist[i][j] = lev_dist[i - 1][j - 1];
+            }
+            else
+            {
+                lev_dist[i][j] = std::min(std::min(lev_dist[i - 1][j] + delete_cost, lev_dist[i][j - 1] + insert_cost), lev_dist[i - 1][j - 1] + replace_cost);
+            }
+
+            if (i > 1 && j > 1 && source[i - 1] == target[j - 2] && source[i - 2] == target[j - 1])
+            {
+                lev_dist[i][j] = std::min(lev_dist[i][j], lev_dist[i - 2][j - 2] + transposition_cost);
+            }
+        }
+    }
+    return lev_dist[min_size][max_size];
+}
+//-----------------------------------------------------------------------------
+template<typename T>
+typename T::size_type DamerauLevenshteinDistance(const T &source, const T &target)
+{
+    return GeneralizedDamerauLevenshteinDistance<T>(source, target);
+}    
+//-----------------------------------------------------------------------------
+ZSUTILS_API int nprintf_to_buf(char* buf, size_t buf_size, size_t count, const char* fmt, ...);
+//-----------------------------------------------------------------------------
+ZSUTILS_API int scanf_from_buf(const char* buf, const char* format, ...);
+//-----------------------------------------------------------------------------
+ZSUTILS_API int swcanf_from_buf(const wchar_t* buf, const wchar_t* format, ...);
+//-----------------------------------------------------------------------------
+ZSUTILS_API std::string error_string(int err);
+ZSUTILS_API int is_file_access(const char* file, int mode);
+ZSUTILS_API int unlink_file(const char* file);
+inline int is_file_access(std::string const& file, int mode)
+{
+	return is_file_access(file.c_str(), mode);
+}
+inline int unlink_file(std::string const& file)
+{
+	return unlink_file(file.c_str());
+}
+//-----------------------------------------------------------------------------
+bool	copy_file(const char* src_path, const char* dst_path);
+//-----------------------------------------------------------------------------
+/// @is_update_info_need - определяет, необходимо ли обновление
+ZSUTILS_API bool is_update_info_need(time_t tt_last_update, 
+									 unsigned interval, unsigned timeout, 
+									 short upd_hh, short upd_mm, 
+									 const char* kind_of_update);
+//-----------------------------------------------------------------------------
+/// @get_32bit_cheque_num - получает случайный номер чека из номера с кассы ExtChequeNum.
+/// Если ExtChequeNum равен 0 - берется значение time(NULL).
+ZSUTILS_API unsigned get_32bit_cheque_num(unsigned ExtChequeNum);
+//-----------------------------------------------------------------------------
+/// @sleep_execution - приостанавливает выполнение на seconds секунд
+ZSUTILS_API unsigned sleep_execution(unsigned seconds);
+//-----------------------------------------------------------------------------
+/// @normalize_phone - нормализует номер телефона для РФ в виде [+]7xxxxxxxxxxx
+ZSUTILS_API std::wstring normalize_phone(std::wstring sPhone, bool add_plus);
+//-----------------------------------------------------------------------------
+ZSUTILS_API std::wstring normalize_phone(std::wstring sPhone, bool add_plus, bool& was_plus);
+//-----------------------------------------------------------------------------
+ZSUTILS_API std::wstring normalize_phone(std::wstring sPhone, wchar_t& prefix);
+//-----------------------------------------------------------------------------
+/// @round_to - выполняет банковское округление с заданной точностью знаков после запятой
+ZSUTILS_API double round_to(double v, int decimals);
+//-----------------------------------------------------------------------------
+/// @math_round_to - выполняет математическое округление с заданной точностью знаков после запятой
+ZSUTILS_API double math_round_to(double v, int decimals);
+//-----------------------------------------------------------------------------
+/// @seredina_bool_from_wstr - разбирает строку как bool
+ZSUTILS_API bool seredina_bool_from_wstr( const std::wstring& s );
+//-----------------------------------------------------------------------------
+/// @seredina_tribool_from_wstr - разбирает строку как трехзначный bool
+ZSUTILS_API seredina_tribool_t seredina_tribool_from_wstr( const std::wstring& s );
+//-----------------------------------------------------------------------------
+/// @seredina_tribool_to_wstr - форматирует строку как как трехзначный bool "", "true", "false"
+ZSUTILS_API std::wstring seredina_tribool_to_wstr( const seredina_tribool_t b);
+//-----------------------------------------------------------------------------
+/// @seredina_tribool_to_wstr_as_int - форматирует строку как как трехзначный bool "", "1", "0"
+ZSUTILS_API std::wstring seredina_tribool_to_wstr_as_int( const seredina_tribool_t b );
+//-----------------------------------------------------------------------------
+
+
+}; // namespace ProLoyalty
+
+#endif // __UTILS_H__
+
+
