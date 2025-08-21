@@ -73,7 +73,7 @@ set(SRC_FILES
     ${PROJECT_NAME_CXX_FILES}
     ${PROJECT_NAME_C_FILES}
 	${DEPENDENCIES_DIR}/tinyxml2/tinyxml2.cpp
-	${DEPENDENCIES_DIR}/libKISSLog/src/kisslog-mt-static.cpp 
+	${DEPENDENCIES_DIR}/libKISSlog/src/kisslog-mt-static.cpp 
 )
 source_group("Sources" FILES ${SRC_FILES})
 
@@ -91,7 +91,7 @@ include_directories(${PROJECT_NAME}
   "${DEPENDENCIES_LIB_DIR}/openssl/include/"
   "${DEPENDENCIES_LIB_DIR}/curl/include/"
   "${DEPENDENCIES_LIB_DIR}/libzip/include/"
-  "${DEPENDENCIES_LIB_DIR}/libKISSLog/"
+  "${DEPENDENCIES_LIB_DIR}/libKISSlog/"
   "${DEPENDENCIES_LIB_DIR}/gsoap/"
   "${DEPENDENCIES_LIB_DIR}/tinyxml2/"
   "${DEPENDENCIES_LIB_DIR}/simpleini/include/"
@@ -194,3 +194,4 @@ if(MSVC)
 			              ${DEPENDENCIES_LIB_DIR}/curlpp/lib/libcurlpp${CMAKE_DEBUG_POSTFIX}.lib 
    )
 endif(MSVC)
+
