@@ -14,6 +14,7 @@ jobs:
         with:
           submodules: true
       - run: sudo apt-get update && sudo apt-get install libboost-test-dev libgtest-dev libboost-all-dev -y
+      - run: ls -R /home/runner/work/upselling_config/upselling_config/dependslib/libKISSLog/
       - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DWITH_BOOST_TEST=ON -DWITH_GTEST=ON
       - run: cmake --build .
       - run: cmake --build . --target test
@@ -38,5 +39,6 @@ jobs:
           asset_path: ./upselling_config-0.0.${{ github.run_number }}-Linux.deb
           asset_name: upselling_config-0.0.${{ github.run_number }}-Linux.deb
           asset_content_type: application/vnd.debian.binary-package
+
 
 
