@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: true
       - run: sudo apt-get update && sudo apt-get install libboost-test-dev libgtest-dev libboost-all-dev -y
@@ -38,4 +38,5 @@ jobs:
           asset_path: ./upselling_config-0.0.${{ github.run_number }}-Linux.deb
           asset_name: upselling_config-0.0.${{ github.run_number }}-Linux.deb
           asset_content_type: application/vnd.debian.binary-package
+
 
