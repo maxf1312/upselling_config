@@ -9,3 +9,4 @@ option(WITH_BOOST_TEST "Whether to build Boost test" OFF)
 option(WITH_GTEST "Whether to build Google test" ON)
 
 add_subdirectory(libplcore)
+add_subdirectory(tests/settingstest)

@@ -87,7 +87,7 @@ namespace kisslog {
       size_t max_char_len() {
          return 1;
       }
-      bool can_truncate(wchar_t *data){
+      bool can_truncate(wchar_t* /*data*/){
          return true;
        }
       std::basic_string<wchar_t> iso_now() {
@@ -146,7 +146,7 @@ namespace kisslog {
        size_t max_char_len() {
          return 1;
        }
-       bool can_truncate(char16_t *data){
+       bool can_truncate(char16_t* /*data*/){
          return true;
        }
     };

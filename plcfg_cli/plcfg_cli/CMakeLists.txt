@@ -89,7 +89,7 @@ include_directories(${PROJECT_NAME}
   "${DEPENDENCIES_LIB_DIR}/openssl/include/"
   "${DEPENDENCIES_LIB_DIR}/curl/include/"
   "${DEPENDENCIES_LIB_DIR}/libzip/include/"
-  "${DEPENDENCIES_LIB_DIR}/libKISSLog/"
+  "${DEPENDENCIES_LIB_DIR}/libKISSlog/"
   "${DEPENDENCIES_LIB_DIR}/gsoap/"
   "${DEPENDENCIES_LIB_DIR}/tinyxml2/"
   "${DEPENDENCIES_LIB_DIR}/simpleini/include/"

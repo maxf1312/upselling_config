@@ -34,7 +34,9 @@ namespace ProLoyalty {
 	struct PLCORE_API ISettings;
 	struct PLCORE_API ISetting
 	{
-	public: 
+	public:
+		using Ptr = std::unique_ptr<ISetting>;
+
 		virtual				~ISetting()	{ ; }
 		virtual	ISetting*	clone() const = 0;
 		virtual	std::string	Name() const = 0;
@@ -70,7 +72,8 @@ namespace ProLoyalty {
 	/// @brief Интерфейс Коллекции Настроек, одного значения
 	struct PLCORE_API ISettings
 	{
-	public: 
+	public:
+		using Ptr = std::unique_ptr<ISettings>;
 		virtual			    ~ISettings() { ; }
 		virtual	size_t		size() const = 0;
 		virtual	ISetting&	item(const char* name) const = 0;

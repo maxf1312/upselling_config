@@ -29,10 +29,10 @@
             ]
         }
         ,{
-            "name": "(gdb) Запустить тест текущий открытый файл",
+            "name": "(gdb) Запустить тест libplcore текущий открытый файл",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/${fileBasenameNoExtension}",
+            "program": "${workspaceFolder}/build/libplcore/tests/${fileBasenameNoExtension}/${fileBasenameNoExtension}",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",

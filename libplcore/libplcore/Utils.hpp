@@ -5,7 +5,7 @@
 #include <libplcore/UtilsTypes.hpp>
 
 typedef struct tag_seredina_response seredina_response_t; 
-enum seredina_tribool_t;
+//enum seredina_tribool_t;
 
 namespace ProLoyalty{
 
@@ -282,6 +282,7 @@ std::basic_string<CharT>& str_replace_all(std::basic_string<CharT>& s,
 	
 	}
 	while(next != pos);
+	if( next_pos ) *next_pos = next;    
 	return s;
 }
 //-----------------------------------------------------------------------------
@@ -319,7 +320,7 @@ bool is_string_equals_ci(const std::basic_string<CType>& s1, const std::basic_st
 template <typename CType>
 bool is_string_equals_ci(const CType* s1, const CType* s2)
 {
-    return !s1 && !s2 || !*s1 && !*s2 || (s1 && s2 && is_string_equals_ci(std::basic_string<CType>{s1}, std::basic_string<CType>{s2}));
+    return (!s1 && !s2) || (!*s1 && !*s2) || (s1 && s2 && is_string_equals_ci(std::basic_string<CType>{s1}, std::basic_string<CType>{s2}));
 }
 
 //-----------------------------------------------------------------------------

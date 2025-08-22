@@ -113,8 +113,8 @@ namespace ProLoyalty
 	{
 	public: 
 		using Ptr_t = unique_ptr<Settings>;
-		//typedef std::vector<Setting*> SettingCont;
-		typedef std::vector<Setting::Ptr_t> SettingCont;
+		typedef std::vector<Setting*> SettingCont;
+		//typedef std::vector<Setting::Ptr_t> SettingCont;
 
 		virtual			~Settings();
 						Settings();
@@ -467,24 +467,29 @@ namespace ProLoyalty
 	//-------------------------------------------------------------------------------
 	// Settings
 	//-------------------------------------------------------------------------------
-	static bool Setting_find_name(Setting::Ptr_t const& p, const char* nm)
+	static bool Setting_find_name(Setting const* p, const char* nm)
 	{
 		return p->Name() == nm;
 	}
 	//-------------------------------------------------------------------------------
-	// static void Setting_del(Setting* p)
-	// {
-	// 	delete p;
-	// }
+	static void Setting_del(Setting* p)
+	{
+		delete p;
+	}
+	//-------------------------------------------------------------------------------
+	static void Setting_reset(Setting::Ptr_t& p)
+	{
+		p.reset();
+	}
 	//-------------------------------------------------------------------------------
 	Settings::~Settings() 
 	{ 
-		// while(m_settings.size() > 0)
-		// {
-		// 	Setting* s = m_settings.back();
-		// 	delete s;
-		// }
-		clear();
+		while(m_settings.size() > 0)
+		{
+			Setting* s = m_settings.back();
+			delete s;
+		}
+		//clear();
 	}		
 	//-------------------------------------------------------------------------------
 	Settings::Settings() 
@@ -492,7 +497,7 @@ namespace ProLoyalty
 		m_encoded(true)
 	{}
 	//-------------------------------------------------------------------------------
-	void	clone_and_add_setting(Setting::Ptr_t const& p, Settings* owner)
+	void	clone_and_add_setting(Setting const* p, Settings* owner)
 	{
 		Setting::Ptr_t s{p->Clone()}; 
 		s->Owner(owner, NULL);
@@ -506,7 +511,7 @@ namespace ProLoyalty
 			m_encoded(rhs.m_encoded)			
 	{
 		std::for_each(rhs.m_settings.begin(), rhs.m_settings.end(), 
-		 			  [this](Setting::Ptr_t const& p){ clone_and_add_setting(p, this); } 
+		 			  [this](Setting* const p){ clone_and_add_setting(p, this); } 
 		);
 	}
 	//-------------------------------------------------------------------------------
@@ -555,9 +560,9 @@ namespace ProLoyalty
 	//-------------------------------------------------------------------------------
 	void			Settings::clear()
 	{
-		// for_each(m_settings.begin(), m_settings.end(), std::ptr_fun(Setting_del));
-		// m_settings.clear();
-		m_settings.erase(begin(m_settings), end(m_settings));
+		for_each(begin(m_settings), end(m_settings), Setting_del);
+		m_settings.clear();
+		//m_settings.erase(begin(m_settings), end(m_settings));
 	}
 	//-------------------------------------------------------------------------------
 	TriStateBool Settings::keysHaveEncryptName() const	
@@ -839,7 +844,7 @@ namespace ProLoyalty
 			auto p = find_if(begin(parent_settings->settings()), end(parent_settings->settings()),
 							 bind(Setting_find_name, _1, node_nm.c_str()));
 
-			Setting* node_setting = parent_settings->settings().end() != p ? p->get() : 
+			Setting* node_setting = parent_settings->settings().end() != p ? *p : 
 								    new NodeSetting(parent_settings, node_nm.c_str()); 
 			parse_ini_key(key_nm.substr(i + 1), key_val, node_setting->ToSettings() );
 			return;
@@ -897,7 +902,7 @@ namespace ProLoyalty
 			: m_ini(ini), m_crypter(p_crypter)	{}		
 	};
 	//-------------------------------------------------------------------------------
-	void	save_Setting_to_INI(Setting::Ptr_t& setting, SaveIniHolder* ini_holder)
+	void	save_Setting_to_INI(Setting* setting, SaveIniHolder* ini_holder)
 	{
 		if( Setting::typeNode != setting->getType() )
 		{
@@ -966,7 +971,7 @@ namespace ProLoyalty
 		IStringCrypter*		   m_crypter;
 	};
 	//-------------------------------------------------------------------------------
-	void	save_Setting_to_xml(Setting::Ptr_t& p_setting, SaveXMLHolder* p_xml_info)
+	void	save_Setting_to_xml(Setting* p_setting, SaveXMLHolder* p_xml_info)
 	{
 		tinyxml2::XMLElement* p_el = p_xml_info->m_doc->NewElement(p_setting->Name().c_str());
 		p_xml_info->m_curr_el->InsertEndChild(p_el);
