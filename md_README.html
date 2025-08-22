@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.13.2"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>upselling_config: ## Замечания по сборке и настройке зависимостей</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">upselling_config<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+   <div id="projectbrief">Bulk text commands network server made for homework 9</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.13.2 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Поиск',false);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){ initResizable(false); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div id="doc-content">
+<div><div class="header">
+  <div class="headertitle"><div class="title">## Замечания по сборке и настройке зависимостей</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><h1><a class="anchor" id="autotoc_md0"></a>
+zlib-1.2.8</h1>
+<p>Build as zlibstatic.lib</p>
+<hr  />
+ <h1><a class="anchor" id="autotoc_md2"></a>
+openssl-1.0.2</h1>
+<p>Must be build and installed to [c or d]:\lib\installed\openssl perl Configure VC-WIN32 &ndash;prefix=d:\LIB\installed\openssl no-asm no-ec_nistp_64_gcc_128 no-gmp no-jpake no-krb5 no-libunbound \ no-md2 no-rc5 no-rfc3779 no-capieng no-sctp no-shared no-ssl-trace no-store no-unit-test no-zlib no-zlib-dynamic</p>
+<p>copy D:/LIB/installed/libzip/include and /lib into lib/libs/openssl/</p>
+<hr  />
+ <h1><a class="anchor" id="autotoc_md4"></a>
+libzip</h1>
+<p>// Windows cmake's arguments mkdir build &amp; cd build cmake -G"Ninja" -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=D:/LIB/installed/libzip -DENABLE_BZIP2=OFF -DENABLE_WINDOWS_CRYPTO=OFF \ -DZLIB_INCLUDE_DIR=D:/LIB/installed/zlib/include -DZLIB_LIBRARY=D:/LIB/installed/zlib/lib/zlibstatic.lib .. cmake &ndash;build . cmake &ndash;install . copy D:/LIB/installed/libzip/include and /lib into lib/libs/libzip/</p>
+<hr  />
+ <h1><a class="anchor" id="autotoc_md6"></a>
+libssh2</h1>
+<p>// Windows cmake's arguments mkdir build &amp; cd build cmake -G"Ninja" -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=D:/LIB/installed/libssh2 -DCRYPTO_BACKEND=OpenSSL -DENABLE_ZLIB_COMPRESSION=ON \ -DOPENSSL_ROOT_DIR=D:/LIB/installed/openssl/ -DZLIB_INCLUDE_DIR=D:/LIB/installed/zlib/include -DZLIB_LIBRARY=D:/LIB/installed/zlib/lib/zlibstatic.lib .. cmake &ndash;build . cmake &ndash;install . copy D:/LIB/installed/libssh2/include and /lib into lib/libs/libssh2/</p>
+<p>Alternative build method with NMake: nmake OPENSSLINC=D:/LIB/installed/openssl/include OPENSSLLIB=D:/LIB/installed/openssl/lib WITH_ZLB=1 BUILD_STATIC_LIB=1 -f NMakefile</p>
+<hr  />
+ <h1><a class="anchor" id="autotoc_md8"></a>
+curl-7.47.1</h1>
+<p>Must be build and installed to d:\lib\installed\curl cmake -G"Ninja" -DCURL_STATICLIB=ON -DCURL_DISABLE_LDAP=ON -DCMAKE_BUILD_TYPE=Release \ -DUSE_OPENSSL=ON -DUSE_WINDOWS_SSPI=OFF -DCURL_ZLIB=ON -DCMAKE_USE_OPENSSL=ON \ -DOPENSSL_ROOT_DIR=../../openssl -DCMAKE_INSTALL_PREFIX=D:/LIB/installed/curl \ -DLibSSH2_DIR=../../libssh2/lib/cmake/libssh2 -DZLIB_INCLUDE_DIR=D:/LIB/installed/zlib/include -DZLIB_LIBRARY=D:/LIB/installed/zlib/lib/zlibstatic.lib ..</p>
+<p>Alternative build method with NMake: binary lib need to be placed into debug and release lib foldes of the solution curl-7.47.1\winbuild&gt;nmake /f Makefile.vc mode=dll VC=8 WITH_SSL=static WITH_ZLIB=static WITH_SSH2=static ENABLE_IPV6=yes ENABLE_SSPI=no ENABLE_IDN=no ENABLE_WINSSL=no GEN_PDB=yes</p>
+<hr  />
+ <h1><a class="anchor" id="autotoc_md10"></a>
+botan-2.12.1</h1>
+<p>Generate amalgamation files botan_all.h, botan_all.cpp, botan_all_internal.h with botan's configure.py script. configure.py &ndash;cpu=x86_32 &ndash;cc=msvc &ndash;verbose &ndash;disable-shared &ndash;no-autoload &ndash;enable-modules=idea,hex,modes,ofb,ctr,filters &ndash;amalgamation</p>
+<hr  />
+ <h1><a class="anchor" id="autotoc_md12"></a>
+cpr</h1>
+<p>cmake -G"Ninja" -DCURL_STATICLIB=ON -DBUILD_CPR_TESTS=OFF -DUSE_SYSTEM_CURL=ON -DCMAKE_BUILD_TYPE=Release -DUSE_OPENSSL=ON -DCURL_ZLIB=ON \ -DCMAKE_USE_OPENSSL=ON -DOPENSSL_ROOT_DIR=../../openssl -DCMAKE_INSTALL_PREFIX=D:/LIB/installed/cpr -DCURL_INCLUDE_DIR=../../../curl/include -DCURL_LIBRARY=../../../curl/lib <br  />
+ -DZLIB_INCLUDE_DIR=D:/LIB/installed/zlib/include -DZLIB_LIBRARY=D:/LIB/installed/zlib/lib/zlibstatic.lib ..</p>
+<hr  />
+ <h1><a class="anchor" id="autotoc_md14"></a>
+curlpp-0.8.1</h1>
+<p>cmake -G"Ninja" -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../../../curlpp -DCURL_INCLUDE_DIR=../../../curl/include -DCURL_LIBRARY=../../../curl/lib/libcurl -DCURL_STATICLIB=ON .. cmake &ndash;build . cmake &ndash;install .</p>
+<hr  />
+ <h1><a class="anchor" id="autotoc_md16"></a>
+gtest</h1>
+<p>cmake -G"Ninja" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=../../../gtest -DBUILD_GMOCK=ON -Dgtest_force_shared_crt=ON .. cmake &ndash;build . cmake &ndash;install . cmake -G"Ninja" -DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIBS=OFF -DCMAKE_INSTALL_PREFIX=../../../gtest -DBUILD_GMOCK=ON -Dgtest_force_shared_crt=ON -DCMAKE_DEBUG_POSTFIX=d .. cmake &ndash;build . cmake &ndash;install .</p>
+<hr  />
+ <h1><a class="anchor" id="autotoc_md18"></a>
+tinyxml2</h1>
+<p>Use AS IS .cpp &amp; .h files</p>
+<hr  />
+ <h1><a class="anchor" id="autotoc_md20"></a>
+gsoap</h1>
+<p>Use AS IS .cpp &amp; .h files</p>
+<hr  />
+ <h1><a class="anchor" id="autotoc_md22"></a>
+sqlite3</h1>
+<p>Use AS IS .cpp &amp; .h files of amalgamation from sqlite source</p>
+<hr  />
+ <h1><a class="anchor" id="autotoc_md24"></a>
+libKISSlog</h1>
+<p>Use AS .hpp files Source libKISSlog\src\kisslog-mt-static.cpp is need to be included into projects </p>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Создано системой&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>
