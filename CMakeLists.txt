@@ -24,3 +24,8 @@ set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
 set(CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
 set(CPACK_PACKAGE_CONTACT m.fukalov@frendit.ru)
 include(CPack)
+
+if(WITH_GTEST)
+    enable_testing()
+    add_test(settingstest libplcore/tests/settingstest/settingstest)
+endif()

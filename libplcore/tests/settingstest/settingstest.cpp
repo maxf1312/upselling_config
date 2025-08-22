@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 # endif // _WINDOWS
 	testing::InitGoogleTest(&argc, argv);
 	int rv = RUN_ALL_TESTS();	
-	cin.get();
+	//cin.get();
 	return rv;
 }
 //-----------------------------------------------------------------------------
@@ -340,9 +340,9 @@ TEST(Settings, Test_load_sleepxml_utf8_settings)
 
 }
 //-----------------------------------------------------------------------------
-// ������� ����������� ����� 1 � ��������� 1 � ���� 2 � ��������� 2
+// функция копирования файла 1 в кодировке 1 в файл 2 в кодировку 2
 //-----------------------------------------------------------------------------
-// ������� ������ wstring � ���� � ��������� �������
+// функция записи wstring в файл с указанной локалью
 bool write_wstr_to_file(const std::wstring& s, const std::string& filename, const std::locale* loc)
 {
 
@@ -358,7 +358,7 @@ bool write_wstr_to_file(const std::wstring& s, const std::string& filename, cons
     return f_out.good();
 }
 //-----------------------------------------------------------------------------
-// ������� ������ wstring � ����  � ��������� ���������
+// функция записи wstring в файл  в указанной кодировке
 bool write_wstr_to_file(const std::wstring& s, const std::string& filename, const std::string& loc_name)
 {
     if( !loc_name.empty() )
@@ -369,7 +369,7 @@ bool write_wstr_to_file(const std::wstring& s, const std::string& filename, cons
     return write_wstr_to_file(s, filename, NULL);
 }
 //-----------------------------------------------------------------------------
-// ������� ������ wstring �� ����� � ��������� �������
+// функция чтения wstring из файла с указанной локалью
 std::wstring read_wstr_from_file(const std::string& filename, const std::locale* loc)
 {
     std::wstring s;
@@ -387,7 +387,7 @@ std::wstring read_wstr_from_file(const std::string& filename, const std::locale*
     return s;
 }
 //-----------------------------------------------------------------------------
-// ������� ������ wstring �� ����� � ��������� ���������
+// функция чтения wstring из файла в указанной кодировке
 std::wstring read_wstr_from_file(const std::string& filename, const std::string& loc_name)
 {
     if( !loc_name.empty() )

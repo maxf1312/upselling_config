@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AppSettings>
+    <Settings>
+        <soap_url _enc="1"></soap_url>
+        <soap_action _enc="1"></soap_action>
+        <soap_usr _enc="1"></soap_usr>
+        <soap_psw _enc="1"></soap_psw>
+        <soap_orgname _enc="1"></soap_orgname>
+        <soap_org _enc="1"></soap_org>
+        <soap_bunit _enc="1"></soap_bunit>
+        <soap_pos _enc="1"></soap_pos>
+        <dcrpt_f></dcrpt_f>
+    </Settings>
+    <Articles _enc_keys="1" _enc_vals="1" _tp="N"/>
+    <CardLimits _enc_keys="1" _enc_vals="1" _tp="N"/>
+    <Meta>
+        <nodecrypt_flags>
+            <flag1>Settings/soap_bunit</flag1>
+            <flag2>Settings/soap_pos</flag2>
+        </nodecrypt_flags>
+        <nodecrypt_par>Settings/dcrpt_f</nodecrypt_par>
+    </Meta>
+</AppSettings>
